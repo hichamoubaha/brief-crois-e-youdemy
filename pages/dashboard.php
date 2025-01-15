@@ -71,3 +71,18 @@ $role = $_SESSION['role'];
                     <a href="../admin/approve-courses.php" class="text-blue-500 hover:text-blue-700">Approve Courses →</a>
                 </div>
             </div>
+
+            <?php elseif($role === 'teacher'): ?>
+            <!-- Teacher Dashboard -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-xl font-semibold mb-4">My Courses</h2>
+                    <a href="../teacher/courses.php" class="text-blue-500 hover:text-blue-700">View My Courses →</a>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-xl font-semibold mb-4">Create New Course</h2>
+                    <a href="../teacher/create-course.php" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Create Course</a>
+                </div>
+            </div>
+
+        <?php else: ?>
