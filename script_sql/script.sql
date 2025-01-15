@@ -55,3 +55,25 @@ CREATE TABLE course_tags (
     FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE
 );
 
+-- Insert initial admin user (password: admin123)
+INSERT INTO users (username, email, password, role, is_verified) 
+VALUES ('admin', 'admin@youdemy.com', '$2y$10$8K1p/95btF6Ye6F3RqkE5.xa5.YK5wl1BB5YbVFhwqpNZL5DTmZm2', 'admin', true);
+
+-- Insert sample categories
+INSERT INTO categories (name) VALUES 
+('Programming'),
+('Design'),
+('Business'),
+('Mathematics'),
+('Languages');
+
+-- Insert sample tags
+INSERT INTO tags (name) VALUES 
+('Beginner'),
+('Intermediate'),
+('Advanced'),
+('Web Development'),
+('Mobile Development'),
+('UI/UX'),
+('Marketing'),
+('Data Science');
