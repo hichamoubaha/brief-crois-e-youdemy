@@ -86,3 +86,18 @@ $role = $_SESSION['role'];
             </div>
 
         <?php else: ?>
+             <!-- Student Dashboard -->
+             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-xl font-semibold mb-4">My Courses</h2>
+                    <a href="../student/my-courses.php" class="text-blue-500 hover:text-blue-700">View My Courses →</a>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-xl font-semibold mb-4">more courses</h2>
+                    <a href="courses.php" class="text-blue-500 hover:text-blue-700">Discover →</a>
+                </div>
+            </div>
+        <?php endif; ?>
+    </div>
+</body>
+</html>
