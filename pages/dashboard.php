@@ -53,7 +53,10 @@ $role = $_SESSION['role'];
                     <h2 class="text-xl font-semibold mb-4">User Management</h2>
                     <a href="../admin/users.php" class="text-blue-500 hover:text-blue-700">Manage Users →</a>
                 </div>
-              
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-xl font-semibold mb-4">Course Management</h2>
+                    <a href="../admin/courses.php" class="text-blue-500 hover:text-blue-700">Manage Courses →</a>
+                </div>
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <h2 class="text-xl font-semibold mb-4">Category Management</h2>
                     <a href="../admin/categories.php" class="text-blue-500 hover:text-blue-700">Manage Categories →</a>
@@ -72,7 +75,7 @@ $role = $_SESSION['role'];
                 </div>
             </div>
 
-            <?php elseif($role === 'teacher'): ?>
+        <?php elseif($role === 'teacher'): ?>
             <!-- Teacher Dashboard -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="bg-white p-6 rounded-lg shadow-md">
@@ -83,11 +86,15 @@ $role = $_SESSION['role'];
                     <h2 class="text-xl font-semibold mb-4">Create New Course</h2>
                     <a href="../teacher/create-course.php" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Create Course</a>
                 </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-xl font-semibold mb-4">Course Statistics</h2>
+                    <a href="../teacher/statistics.php" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">View Statistics</a>
+                </div>
             </div>
 
         <?php else: ?>
-             <!-- Student Dashboard -->
-             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Student Dashboard -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <h2 class="text-xl font-semibold mb-4">My Courses</h2>
                     <a href="../student/my-courses.php" class="text-blue-500 hover:text-blue-700">View My Courses →</a>
@@ -101,3 +108,4 @@ $role = $_SESSION['role'];
     </div>
 </body>
 </html>
+
