@@ -60,7 +60,7 @@ The Youdemy platform aims to revolutionize online learning by providing an inter
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-repo/youdemy-platform.git
+   git clone https://github.com/hichamoubaha/brief-crois-e-youdemy.git
    ```
 2. Navigate to the project directory:
    ```bash
@@ -80,35 +80,4 @@ The Youdemy platform aims to revolutionize online learning by providing an inter
    http://localhost:8000
    ```
 
-## Directory Structure
 
-```
-Youdemy/
-├── config/            # Configuration files
-├── controllers/       # Application controllers
-├── models/            # Database models
-├── views/             # Frontend views
-├── public/            # Public assets (CSS, JS, images)
-├── database/          # Database migrations and seeders
-└── index.php          # Entry point for the application
-```
-
-## Contribution
-
-1. Fork the repository.
-2. Create a new branch:
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
-3. Commit your changes:
-   ```bash
-   git commit -m "Add your message here"
-   ```
-4. Push to your branch:
-   ```bash
-   git push origin feature/your-feature-name
-   ```
-5. Open a pull request.
-
-## License
-This project is licensed under the MIT License. See the LICENSE file for details.
