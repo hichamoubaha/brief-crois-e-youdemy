@@ -132,11 +132,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <div class="mb-4">
                 <label class="block text-gray-300 text-sm font-bold mb-2" for="video_url">
-                    Video URL (YouTube, Vimeo, or direct video link)
+                    Video URL (YouTube, or direct video link)
                 </label>
                 <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                       id="video_url" type="url" name="video_url" placeholder="https://www.youtube.com/watch?v=... or https://vimeo.com/...">
-                <p class="text-sm text-gray-400 mt-1">Enter a YouTube, Vimeo, or direct video link.</p>
+                       id="video_url" type="url" name="video_url" placeholder="https://www.youtube.com/watch?v=... ">
+                <p class="text-sm text-gray-400 mt-1">Enter a YouTube, or direct video link.</p>
             </div>
 
             <div class="mb-4">
