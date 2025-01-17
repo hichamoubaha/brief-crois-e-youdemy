@@ -46,85 +46,220 @@ $role = $_SESSION['role'];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Youdemy</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .gradient-text {
+            background: linear-gradient(45deg, #3b82f6, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .dashboard-card {
+            background: linear-gradient(145deg, rgba(31, 41, 55, 0.9), rgba(17, 24, 39, 0.9));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+    </style>
 </head>
-<body class="bg-gray-100">
-    <nav class="bg-white shadow-lg">
-        <div class="max-w-6xl mx-auto px-4">
-            <div class="flex justify-between">
-                <div class="flex space-x-7">
-                    <div>
-                        <a href="../index.php" class="flex items-center py-4 px-2">
-                            <span class="font-semibold text-gray-500 text-lg">Youdemy</span>
-                        </a>
-                    </div>
+<body class="bg-gray-900 text-gray-100">
+    <!-- Navigation -->
+    <nav class="w-full z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="../index.php" class="flex items-center space-x-3">
+                        <i class="fas fa-graduation-cap text-3xl text-blue-500"></i>
+                        <span class="font-bold text-2xl gradient-text">Youdemy</span>
+                    </a>
                 </div>
-                <div class="flex items-center space-x-3">
-                    <a href="logout.php" class="py-2 px-4 bg-red-500 text-white rounded hover:bg-red-600">Logout</a>
+                <div class="flex items-center space-x-4">
+                    <a href="logout.php" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
                 </div>
             </div>
         </div>
     </nav>
 
-    <div class="max-w-6xl mx-auto px-4 py-8">
-        <h1 class="text-3xl font-bold text-gray-800 mb-8">Dashboard</h1>
+    <!-- Dashboard Content -->
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-8 gradient-text">Dashboard</h1>
 
-        <?php if($role === 'admin'): ?>
+        <?php if ($role === 'admin'): ?>
             <!-- Admin Dashboard -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h2 class="text-xl font-semibold mb-4">User Management</h2>
-                    <a href="../admin/users.php" class="text-blue-500 hover:text-blue-700">Manage Users →</a>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="dashboard-card p-6 rounded-lg">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <i class="fas fa-users text-3xl text-blue-500"></i>
+                        <h2 class="text-xl font-semibold">User Management</h2>
+                    </div>
+                    <a href="../admin/users.php" class="text-blue-500 hover:text-blue-700 flex items-center space-x-2">
+                        <span>Manage Users</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
                 </div>
-               
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h2 class="text-xl font-semibold mb-4">Category Management</h2>
-                    <a href="../admin/categories.php" class="text-blue-500 hover:text-blue-700">Manage Categories →</a>
+                <div class="dashboard-card p-6 rounded-lg">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <i class="fas fa-tags text-3xl text-blue-500"></i>
+                        <h2 class="text-xl font-semibold">Category Management</h2>
+                    </div>
+                    <a href="../admin/categories.php" class="text-blue-500 hover:text-blue-700 flex items-center space-x-2">
+                        <span>Manage Categories</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h2 class="text-xl font-semibold mb-4">Tags Management</h2>
-                    <a href="../admin/tags.php" class="text-blue-500 hover:text-blue-700">Manage Tags →</a>
+                <div class="dashboard-card p-6 rounded-lg">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <i class="fas fa-tag text-3xl text-blue-500"></i>
+                        <h2 class="text-xl font-semibold">Tags Management</h2>
+                    </div>
+                    <a href="../admin/tags.php" class="text-blue-500 hover:text-blue-700 flex items-center space-x-2">
+                        <span>Manage Tags</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h2 class="text-xl font-semibold mb-4">Statistics Management</h2>
-                    <a href="../admin/statistics.php" class="text-blue-500 hover:text-blue-700">View Statistics →</a>
+                <div class="dashboard-card p-6 rounded-lg">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <i class="fas fa-chart-bar text-3xl text-blue-500"></i>
+                        <h2 class="text-xl font-semibold">Statistics Management</h2>
+                    </div>
+                    <a href="../admin/statistics.php" class="text-blue-500 hover:text-blue-700 flex items-center space-x-2">
+                        <span>View Statistics</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h2 class="text-xl font-semibold mb-4">Course Approval</h2>
-                    <a href="../admin/approve-courses.php" class="text-blue-500 hover:text-blue-700">Approve Courses →</a>
+                <div class="dashboard-card p-6 rounded-lg">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <i class="fas fa-check-circle text-3xl text-blue-500"></i>
+                        <h2 class="text-xl font-semibold">Course Approval</h2>
+                    </div>
+                    <a href="../admin/approve-courses.php" class="text-blue-500 hover:text-blue-700 flex items-center space-x-2">
+                        <span>Approve Courses</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
                 </div>
             </div>
 
-        <?php elseif($role === 'teacher'): ?>
+        <?php elseif ($role === 'teacher'): ?>
             <!-- Teacher Dashboard -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h2 class="text-xl font-semibold mb-4">My Courses</h2>
-                    <a href="../teacher/courses.php" class="text-blue-500 hover:text-blue-700">View My Courses →</a>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="dashboard-card p-6 rounded-lg">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <i class="fas fa-book text-3xl text-blue-500"></i>
+                        <h2 class="text-xl font-semibold">My Courses</h2>
+                    </div>
+                    <a href="../teacher/courses.php" class="text-blue-500 hover:text-blue-700 flex items-center space-x-2">
+                        <span>View My Courses</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h2 class="text-xl font-semibold mb-4">Create New Course</h2>
-                    <a href="../teacher/create-course.php" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Create Course</a>
+                <div class="dashboard-card p-6 rounded-lg">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <i class="fas fa-plus-circle text-3xl text-blue-500"></i>
+                        <h2 class="text-xl font-semibold">Create New Course</h2>
+                    </div>
+                    <a href="../teacher/create-course.php" class="text-blue-500 hover:text-blue-700 flex items-center space-x-2">
+                        <span>Create Course</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h2 class="text-xl font-semibold mb-4">Course Statistics</h2>
-                    <a href="../teacher/statistics.php" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">View Statistics</a>
+                <div class="dashboard-card p-6 rounded-lg">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <i class="fas fa-chart-line text-3xl text-blue-500"></i>
+                        <h2 class="text-xl font-semibold">Course Statistics</h2>
+                    </div>
+                    <a href="../teacher/statistics.php" class="text-blue-500 hover:text-blue-700 flex items-center space-x-2">
+                        <span>View Statistics</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
                 </div>
             </div>
 
         <?php else: ?>
             <!-- Student Dashboard -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h2 class="text-xl font-semibold mb-4">My Courses</h2>
-                    <a href="../student/my-courses.php" class="text-blue-500 hover:text-blue-700">View My Courses →</a>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="dashboard-card p-6 rounded-lg">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <i class="fas fa-book text-3xl text-blue-500"></i>
+                        <h2 class="text-xl font-semibold">My Courses</h2>
+                    </div>
+                    <a href="../student/my-courses.php" class="text-blue-500 hover:text-blue-700 flex items-center space-x-2">
+                        <span>View My Courses</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h2 class="text-xl font-semibold mb-4">more courses</h2>
-                    <a href="courses.php" class="text-blue-500 hover:text-blue-700">Discover →</a>
+                <div class="dashboard-card p-6 rounded-lg">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <i class="fas fa-search text-3xl text-blue-500"></i>
+                        <h2 class="text-xl font-semibold">Discover Courses</h2>
+                    </div>
+                    <a href="courses.php" class="text-blue-500 hover:text-blue-700 flex items-center space-x-2">
+                        <span>Discover More</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
                 </div>
             </div>
         <?php endif; ?>
     </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-300 py-12 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- About Section -->
+                <div>
+                    <h3 class="text-lg font-bold mb-4 gradient-text">About Youdemy</h3>
+                    <p class="text-sm text-gray-400">
+                        Youdemy is an online learning platform dedicated to providing high-quality courses from industry experts. Transform your future with our comprehensive learning resources.
+                    </p>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-lg font-bold mb-4 gradient-text">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="../index.php" class="text-gray-400 hover:text-white transition duration-200">Home</a></li>
+                        <li><a href="#courses" class="text-gray-400 hover:text-white transition duration-200">Courses</a></li>
+                        <li><a href="#categories" class="text-gray-400 hover:text-white transition duration-200">Categories</a></li>
+                        <li><a href="login.php" class="text-gray-400 hover:text-white transition duration-200">Login</a></li>
+                        <li><a href="register.php" class="text-gray-400 hover:text-white transition duration-200">Register</a></li>
+                    </ul>
+                </div>
+
+                <!-- Social Media -->
+                <div>
+                    <h3 class="text-lg font-bold mb-4 gradient-text">Follow Us</h3>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition duration-200">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition duration-200">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition duration-200">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition duration-200">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition duration-200">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Copyright -->
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center">
+                <p class="text-sm text-gray-400">
+                    &copy; <?php echo date("Y"); ?> Youdemy. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>
-
