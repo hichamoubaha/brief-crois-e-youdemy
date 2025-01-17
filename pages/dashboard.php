@@ -2,6 +2,9 @@
 require_once '../config/config.php';
 require_once '../classes/User.php';
 require_once '../classes/Course.php';
+require_once '../classes/Admin.php';
+require_once '../classes/Teacher.php';
+require_once '../classes/Student.php';
 
 session_start();
 
@@ -12,6 +15,25 @@ if (!isset($_SESSION['user_id'])) {
 
 $database = new Database();
 $db = $database->connect();
+
+switch ($_SESSION['role']) {
+    case 'admin':
+        $user = new Admin($db);
+        break;
+    case 'teacher':
+        $user = new Teacher($db);
+        break;
+    case 'student':
+        $user = new Student($db);
+        break;
+    default:
+        // Handle unexpected role
+        header('Location: logout.php');
+        exit;
+}
+
+$dashboardInfo = $user->getDashboardInfo();
+
 $course = new Course($db);
 
 $role = $_SESSION['role'];
@@ -53,10 +75,7 @@ $role = $_SESSION['role'];
                     <h2 class="text-xl font-semibold mb-4">User Management</h2>
                     <a href="../admin/users.php" class="text-blue-500 hover:text-blue-700">Manage Users →</a>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h2 class="text-xl font-semibold mb-4">Course Management</h2>
-                    <a href="../admin/courses.php" class="text-blue-500 hover:text-blue-700">Manage Courses →</a>
-                </div>
+               
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <h2 class="text-xl font-semibold mb-4">Category Management</h2>
                     <a href="../admin/categories.php" class="text-blue-500 hover:text-blue-700">Manage Categories →</a>
