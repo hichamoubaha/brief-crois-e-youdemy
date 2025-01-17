@@ -6,7 +6,7 @@ session_start();
 
 $database = new Database();
 $db = $database->connect();
-$user = new User($db);
+// We'll use the static register method from the User class
 
 $error = '';
 $success = '';
@@ -17,11 +17,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password = $_POST['password'] ?? '';
     $role = $_POST['role'] ?? '';
 
+    // Server-side validation
     if (empty($username) || empty($email) || empty($password) || empty($role)) {
         $error = 'All fields are required';
+    } elseif (!preg_match("/^[a-zA-Z]+$/", $username)) {
+        $error = 'Username must contain only letters.';
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error = 'Invalid email format.';
+    } elseif (strlen($password) < 6) {
+        $error = 'Password must be at least 6 characters long.';
     } else {
         try {
-            if ($user->register($username, $email, $password, $role)) {
+            if (User ::register($db, $username, $email, $password, $role)) {
                 $success = 'Registration successful! Please login.';
             } else {
                 $error = 'Registration failed';
@@ -40,6 +47,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - Youdemy</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body class="bg-gray-100">
     <div class="min-h-screen flex items-center justify-center">
@@ -58,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
             <?php endif; ?>
 
-            <form method="POST" action="">
+            <form id="registrationForm" method="POST" action="">
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
                         Username
@@ -103,6 +112,51 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </p>
         </div>
     </div>
+
+    <script>
+        document.getElementById('registrationForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            // Get form values
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Regex for username (only letters)
+            const usernameRegex = /^[A-Za-z]+$/;
+            // Regex for email (valid email format)
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            // Validation checks
+            if (!usernameRegex.test(username)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid Username',
+                    text: 'Username must contain only letters.',
+                });
+                return;
+            }
+
+            if (!emailRegex.test(email)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid Email',
+                    text: 'Please enter a valid email address.',
+                });
+                return;
+            }
+
+            if (password.length < 6) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid Password',
+                    text: 'Password must be at least 6 characters long.',
+                });
+                return;
+            }
+
+            // If all validations pass, submit the form
+            this.submit();
+        });
+    </script>
 </body>
 </html>
-
