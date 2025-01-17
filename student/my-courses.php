@@ -5,16 +5,18 @@ require_once '../classes/Student.php';
 session_start();
 
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'student') {
-    header('Location: ../login.php');
+    header('Location: ../pages/login.php');
     exit;
 }
 
 $database = new Database();
 $db = $database->connect();
 $student = new Student($db);
+$student->setId($_SESSION['user_id']); // Set the student ID
 
-$courses = $student->getEnrolledCourses($_SESSION['user_id']);
+$courses = $student->getEnrolledCourses();
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
