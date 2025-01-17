@@ -1,21 +1,16 @@
 <?php
-class Admin {
-    private $db;
+require_once 'User.php';
 
+class Admin extends User {
     public function __construct($db) {
-        $this->db = $db;
+        parent::__construct($db);
+        $this->role = 'admin';
     }
 
-    public function getAllCourses() {
-        $query = "SELECT c.*, cat.name as category_name 
-                  FROM courses c 
-                  LEFT JOIN categories cat ON c.category_id = cat.id 
-                  ORDER BY c.created_at DESC";
-        $stmt = $this->db->prepare($query);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    public function setId($id) {
+        $this->id = $id;
     }
-    
+
     public function getAllUsers() {
         $query = "SELECT * FROM users WHERE role != 'admin' ORDER BY created_at DESC";
         $stmt = $this->db->prepare($query);
@@ -41,77 +36,52 @@ class Admin {
         try {
             $this->db->beginTransaction();
 
-            // Delete user's enrollments
+            // First, delete all enrollments for this user (if they're a student)
             $stmt = $this->db->prepare("DELETE FROM enrollments WHERE student_id = :user_id");
             $stmt->execute(['user_id' => $user_id]);
 
-            // Delete user's courses (if they're a teacher)
+            // Delete all course tags for courses created by this user (if they're a teacher)
+            $stmt = $this->db->prepare("
+                DELETE ct FROM course_tags ct 
+                INNER JOIN courses c ON ct.course_id = c.id 
+                WHERE c.teacher_id = :user_id
+            ");
+            $stmt->execute(['user_id' => $user_id]);
+
+            // Delete all courses created by this user (if they're a teacher)
             $stmt = $this->db->prepare("DELETE FROM courses WHERE teacher_id = :user_id");
             $stmt->execute(['user_id' => $user_id]);
 
-            // Delete the user
-            $stmt = $this->db->prepare("DELETE FROM users WHERE id = :user_id");
+            // Finally, delete the user
+            $stmt = $this->db->prepare("DELETE FROM users WHERE id = :user_id AND role != 'admin'");
             $stmt->execute(['user_id' => $user_id]);
 
             $this->db->commit();
             return true;
-        } catch (Exception $e) {
+        } catch (PDOException $e) {
             $this->db->rollBack();
+            error_log("Error deleting user: " . $e->getMessage());
             return false;
         }
     }
 
-    public function getStatistics() {
-        $stats = [];
-        
-        // Total courses
-        $query = "SELECT COUNT(*) as total FROM courses";
+    public function getDashboardInfo() {
+        $query = "SELECT 
+                    (SELECT COUNT(*) FROM users WHERE role = 'student') as total_students,
+                    (SELECT COUNT(*) FROM users WHERE role = 'teacher') as total_teachers,
+                    (SELECT COUNT(*) FROM courses) as total_courses";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
-        $stats['total_courses'] = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
-
-        // Courses by category
-        $query = "SELECT c.name, COUNT(co.id) as count 
-                 FROM categories c 
-                 LEFT JOIN courses co ON c.id = co.category_id 
-                 GROUP BY c.id";
-        $stmt = $this->db->prepare($query);
-        $stmt->execute();
-        $stats['courses_by_category'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        // Most popular course
-        $query = "SELECT c.title, COUNT(e.id) as enrollments 
-                 FROM courses c 
-                 LEFT JOIN enrollments e ON c.id = e.course_id 
-                 GROUP BY c.id 
-                 ORDER BY enrollments DESC 
-                 LIMIT 1";
-        $stmt = $this->db->prepare($query);
-        $stmt->execute();
-        $stats['most_popular_course'] = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        // Top 3 teachers
-        $query = "SELECT u.username, COUNT(c.id) as course_count 
-                 FROM users u 
-                 LEFT JOIN courses c ON u.id = c.teacher_id 
-                 WHERE u.role = 'teacher' 
-                 GROUP BY u.id 
-                 ORDER BY course_count DESC 
-                 LIMIT 3";
-        $stmt = $this->db->prepare($query);
-        $stmt->execute();
-        $stats['top_teachers'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        return $stats;
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function getUnapprovedCourses() {
         $query = "SELECT c.*, u.username as teacher_name, cat.name as category_name 
-                  FROM courses c 
-                  JOIN users u ON c.teacher_id = u.id 
-                  JOIN categories cat ON c.category_id = cat.id 
-                  WHERE c.is_approved = FALSE 
-                  ORDER BY c.created_at DESC";
+                FROM courses c 
+                LEFT JOIN users u ON c.teacher_id = u.id 
+                LEFT JOIN categories cat ON c.category_id = cat.id 
+                WHERE c.is_approved = FALSE
+                ORDER BY c.created_at DESC";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -123,6 +93,48 @@ class Admin {
         $stmt->bindParam(":course_id", $course_id);
         return $stmt->execute();
     }
-}
-?>
 
+    public function getStatistics() {
+        $stats = [];
+
+        // Total courses
+        $query = "SELECT COUNT(*) as total_courses FROM courses";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $stats['total_courses'] = $stmt->fetch(PDO::FETCH_ASSOC)['total_courses'];
+
+        // Most popular course
+        $query = "SELECT c.id, c.title, COUNT(e.id) as enrollments 
+                FROM courses c 
+                LEFT JOIN enrollments e ON c.id = e.course_id 
+                GROUP BY c.id 
+                ORDER BY enrollments DESC 
+                LIMIT 1";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $stats['most_popular_course'] = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Courses by category
+        $query = "SELECT cat.name, COUNT(c.id) as count 
+                FROM categories cat 
+                LEFT JOIN courses c ON cat.id = c.category_id 
+                GROUP BY cat.id";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $stats['courses_by_category'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Top teachers
+        $query = "SELECT u.id, u.username, COUNT(c.id) as course_count 
+                FROM users u 
+                LEFT JOIN courses c ON u.id = c.teacher_id 
+                WHERE u.role = 'teacher' 
+                GROUP BY u.id 
+                ORDER BY course_count DESC 
+                LIMIT 5";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $stats['top_teachers'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $stats;
+    }
+}
