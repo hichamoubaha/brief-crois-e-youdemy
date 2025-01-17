@@ -138,7 +138,7 @@ if ($search) {
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <?php foreach($courses as $course): ?>
                 <div class="bg-gray-800 rounded-xl overflow-hidden hover-scale border border-gray-700">
-                    <img src="../cour.jpeg" alt="<?php echo htmlspecialchars($course['title']); ?>" class="course-image">
+                    <img src="../images/cour.jpeg" alt="<?php echo htmlspecialchars($course['title']); ?>" class="course-image">
                     <div class="p-6">
                         <div class="flex items-center space-x-2 mb-4">
                             <i class="fas fa-book text-blue-500"></i>

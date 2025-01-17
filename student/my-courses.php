@@ -94,7 +94,7 @@ $courses = $student->getEnrolledCourses();
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <?php foreach ($courses as $course): ?>
                     <div class="dashboard-card p-6 rounded-lg">
-                    <img src="../cour.jpeg" alt="<?php echo htmlspecialchars($course['title']); ?>" class="course-image">
+                    <img src="../images/cour.jpeg" alt="<?php echo htmlspecialchars($course['title']); ?>" class="course-image">
                         <h2 class="text-xl font-semibold mb-2"><?php echo htmlspecialchars($course['title']); ?></h2>
                         <p class="text-gray-400 mb-4"><?php echo htmlspecialchars(substr($course['description'], 0, 150)) . '...'; ?></p>
                         <div class="flex justify-between items-center">

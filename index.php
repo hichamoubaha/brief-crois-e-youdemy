@@ -96,7 +96,7 @@ if ($search) {
 
     <!-- Hero Section with Background Image -->
     <div class="relative h-[600px] overflow-hidden">
-        <img src="study.jpg" alt="Students learning online" class="w-full h-full object-cover">
+        <img src="images/study.jpg" alt="Students learning online" class="w-full h-full object-cover">
         <div class="absolute inset-0 hero-overlay flex items-center">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                 <h1 class="text-4xl md:text-6xl font-extrabold mb-4 text-white">
@@ -165,7 +165,7 @@ if ($search) {
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="courses">
             <?php foreach($courses as $course): ?>
                 <div class="bg-gray-800 rounded-xl overflow-hidden transform hover:scale-105 transition duration-200 border border-gray-700">
-                    <img src="cour.jpeg" alt="<?php echo htmlspecialchars($course['title']); ?>" class="course-image">
+                    <img src="images/cour.jpeg" alt="<?php echo htmlspecialchars($course['title']); ?>" class="course-image">
                     <div class="p-6">
                         <div class="flex items-center space-x-2 mb-4">
                             <i class="fas fa-book text-blue-500"></i>
