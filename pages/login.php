@@ -1,12 +1,16 @@
 <?php
 require_once '../config/config.php';
 require_once '../classes/User.php';
+require_once '../classes/Student.php';
+require_once '../classes/Admin.php';
+require_once '../classes/Teacher.php';
 
 session_start();
 
 $database = new Database();
 $db = $database->connect();
-$user = new User($db);
+// We'll determine the user type after successful login
+$user = new Student($db); // Default to Student, we'll change this if needed
 
 $error = '';
 
@@ -15,6 +19,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password = $_POST['password'] ?? '';
 
     if ($user->login($email, $password)) {
+        // Determine the correct user type and create the appropriate object
+        switch ($_SESSION['role']) {
+            case 'admin':
+                $user = new Admin($db);
+                break;
+            case 'teacher':
+                $user = new Teacher($db);
+                break;
+            case 'student':
+                $user = new Student($db);
+                break;
+        }
         header('Location: dashboard.php');
         exit;
     } else {
