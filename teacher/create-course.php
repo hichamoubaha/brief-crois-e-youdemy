@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($teacher->createCourse($title, $description, $content, $video_url, $_SESSION['user_id'], $category_id, $selected_tags)) {
             $success = 'Course created successfully!';
         } else {
-            $error = 'Failed to create course';
+            $error = 'Failed to create course'; // This will be triggered if the createCourse method returns false
         }
     }
 }
