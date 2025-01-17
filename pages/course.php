@@ -9,7 +9,7 @@ $database = new Database();
 $db = $database->connect();
 
 if (!isset($_GET['id'])) {
-    header('Location: index.php');
+    header('Location: ../index.php');
     exit;
 }
 
@@ -27,7 +27,7 @@ $stmt->execute();
 $course = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$course) {
-    header('Location: index.php');
+    header('Location: ../index.php');
     exit;
 }
 
@@ -45,10 +45,11 @@ $error = '';
 $success = '';
 if (isset($_SESSION['user_id']) && $_SESSION['role'] === 'student' && isset($_POST['enroll'])) {
     $student = new Student($db);
-    if ($student->enrollCourse($_SESSION['user_id'], $course_id)) {
+    $student->setId($_SESSION['user_id']);
+    if ($student->enrollCourse($course_id)) {
         $success = 'Successfully enrolled in the course!';
     } else {
-        $error = 'You are already enrolled in this course.';
+        $error = 'You are already enrolled in this course or the course is not available.';
     }
 }
 
