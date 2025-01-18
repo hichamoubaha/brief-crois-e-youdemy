@@ -20,7 +20,7 @@ class Course {
         return $stmt->execute();
     }
 
-    public function getAllCourses($page = 1, $limit = 9) {
+    public function getAllCourses($page = 1, $limit = 6) { 
         $offset = ($page - 1) * $limit;
         $query = "SELECT c.*, u.username as teacher_name, cat.name as category_name 
                  FROM courses c 
@@ -34,7 +34,7 @@ class Course {
         $stmt->bindParam(":limit", $limit, PDO::PARAM_INT);
         $stmt->bindParam(":offset", $offset, PDO::PARAM_INT);
         $stmt->execute();
-
+    
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -45,16 +45,17 @@ class Course {
                  LEFT JOIN users u ON c.teacher_id = u.id 
                  LEFT JOIN categories cat ON c.category_id = cat.id 
                  WHERE (c.title LIKE :keyword OR c.description LIKE :keyword) AND c.is_approved = TRUE
-                 ORDER BY c.created_at DESC";
+                 ORDER BY c.created_at DESC
+                 LIMIT 6"; 
         
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(":keyword", $keyword);
         $stmt->execute();
-
+    
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getCoursesByCategory($category_id, $page = 1, $limit = 9) {
+    public function getCoursesByCategory($category_id, $page = 1, $limit = 6) { 
         $offset = ($page - 1) * $limit;
         $query = "SELECT c.*, u.username as teacher_name, cat.name as category_name 
                  FROM courses c 
@@ -69,7 +70,7 @@ class Course {
         $stmt->bindParam(":limit", $limit, PDO::PARAM_INT);
         $stmt->bindParam(":offset", $offset, PDO::PARAM_INT);
         $stmt->execute();
-
+    
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
