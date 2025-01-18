@@ -94,7 +94,7 @@ error_log("Courses fetched: " . print_r($courses, true));
         <?php if (empty($courses)): ?>
             <div class="dashboard-card p-6 rounded-lg">
                 <p class="text-gray-300">You haven't created any courses yet.</p>
-                <p class="text-gray-400 mt-2">Debug info: Teacher ID = <?php echo $debug['id']; ?></p>
+                
             </div>
         <?php else: ?>
             
