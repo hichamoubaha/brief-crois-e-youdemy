@@ -2,13 +2,8 @@
 require_once 'User.php';
 
 class Admin extends User {
-    public function __construct($db) {
-        parent::__construct($db);
-        $this->role = 'admin';
-    }
-
-    public function setId($id) {
-        $this->id = $id;
+    public function __construct($db, $id = null, $username = null, $email = null, $password = null, $is_active = true, $is_verified = true) {
+        parent::__construct($db, $id, $username, $email, $password, 'admin', $is_active, $is_verified);
     }
 
     public function getAllUsers() {
@@ -36,11 +31,11 @@ class Admin extends User {
         try {
             $this->db->beginTransaction();
 
-            // First, delete all enrollments for this user (if they're a student)
+            // Delete enrollments
             $stmt = $this->db->prepare("DELETE FROM enrollments WHERE student_id = :user_id");
             $stmt->execute(['user_id' => $user_id]);
 
-            // Delete all course tags for courses created by this user (if they're a teacher)
+            // Delete course tags for courses created by this user
             $stmt = $this->db->prepare("
                 DELETE ct FROM course_tags ct 
                 INNER JOIN courses c ON ct.course_id = c.id 
@@ -48,11 +43,11 @@ class Admin extends User {
             ");
             $stmt->execute(['user_id' => $user_id]);
 
-            // Delete all courses created by this user (if they're a teacher)
+            // Delete courses created by this user
             $stmt = $this->db->prepare("DELETE FROM courses WHERE teacher_id = :user_id");
             $stmt->execute(['user_id' => $user_id]);
 
-            // Finally, delete the user
+            // Delete the user
             $stmt = $this->db->prepare("DELETE FROM users WHERE id = :user_id AND role != 'admin'");
             $stmt->execute(['user_id' => $user_id]);
 
@@ -138,3 +133,4 @@ class Admin extends User {
         return $stats;
     }
 }
+

@@ -13,7 +13,7 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-$database = new Database();
+$database = Database::getInstance();
 $db = $database->connect();
 
 switch ($_SESSION['role']) {

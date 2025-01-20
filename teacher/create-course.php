@@ -9,9 +9,11 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'teacher') {
     exit;
 }
 
-$database = new Database();
+$database = Database::getInstance();
 $db = $database->connect();
-$teacher = new Teacher($db);
+
+// Create a Teacher object with the logged-in user's ID
+$teacher = new Teacher($db, $_SESSION['user_id']);
 
 $error = '';
 $success = '';
@@ -34,10 +36,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($title) || empty($description) || empty($content) || empty($category_id)) {
         $error = 'All fields are required';
     } else {
-        if ($teacher->createCourse($title, $description, $content, $video_url, $_SESSION['user_id'], $category_id, $selected_tags)) {
+        // Debugging: Log the input data
+        error_log("Creating course with data: " . print_r([
+            'title' => $title,
+            'description' => $description,
+            'content' => $content,
+            'video_url' => $video_url,
+            'category_id' => $category_id,
+            'tags' => $selected_tags
+        ], true));
+
+        // Call createCourse without passing teacher_id (it's already set in the object)
+        if ($teacher->createCourse($title, $description, $content, $video_url, $category_id, $selected_tags)) {
             $success = 'Course created successfully!';
         } else {
-            $error = 'Failed to create course'; // This will be triggered if the createCourse method returns false
+            $error = 'Failed to create course';
         }
     }
 }

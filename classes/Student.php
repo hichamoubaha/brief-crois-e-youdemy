@@ -2,11 +2,9 @@
 require_once 'User.php';
 
 class Student extends User {
-    public function __construct($db) {
-        parent::__construct($db);
-        $this->role = 'student';
+    public function __construct($db, $id = null, $username = null, $email = null, $password = null, $is_active = true, $is_verified = false) {
+        parent::__construct($db, $id, $username, $email, $password, 'student', $is_active, $is_verified);
     }
-
     public function setId($id) {
         $this->id = $id;
     }
@@ -72,3 +70,4 @@ class Student extends User {
         ];
     }
 }
+

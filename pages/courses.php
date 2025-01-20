@@ -4,7 +4,7 @@ require_once '../classes/Course.php';
 
 session_start();
 
-$database = new Database();
+$database = Database::getInstance();
 $db = $database->connect();
 $course = new Course($db);
 

@@ -4,7 +4,7 @@ require_once '../classes/User.php';
 
 session_start();
 
-$database = new Database();
+$database = Database::getInstance();
 $db = $database->connect();
 // We'll use the static register method from the User class
 

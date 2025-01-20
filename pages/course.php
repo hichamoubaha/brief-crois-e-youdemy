@@ -5,7 +5,7 @@ require_once '../classes/Student.php';
 
 session_start();
 
-$database = new Database();
+$database = Database::getInstance();
 $db = $database->connect();
 
 if (!isset($_GET['id'])) {

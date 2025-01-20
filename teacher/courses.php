@@ -9,13 +9,12 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'teacher') {
     exit;
 }
 
-$database = new Database();
+$database = Database::getInstance();
 $db = $database->connect();
 $teacher = new Teacher($db);
 $teacher->setId($_SESSION['user_id']);
-$debug = $teacher->debug();
-error_log("Teacher debug info: " . print_r($debug, true));
-
+// $debug = $teacher->debug();
+// error_log("Teacher debug info: " . print_r($debug, true));
 $courses = $teacher->getMyCourses();
 error_log("Courses fetched: " . print_r($courses, true));
 ?>
